@@ -32,6 +32,8 @@ public class BuildTile : MonoBehaviour
 
     public TextMesh showup;
 
+    public Transform folder;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -84,8 +86,8 @@ public class BuildTile : MonoBehaviour
                     time_since_build = 0f;
                     GameObject ob = Instantiate(prefab_building, build_trans);
                     previous_build = build_trans.position;
-                    ob.transform.parent = null;
-                    Debug.Log("Prefabbed");
+                    ob.transform.parent = folder;
+                    // Debug.Log("Prefabbed");
                 }
             } else
             {
