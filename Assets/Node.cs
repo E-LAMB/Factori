@@ -17,6 +17,8 @@ public class Node : MonoBehaviour
     public Color col_d;
 
     public float charge_time;
+    public bool always_generates;
+    public bool be_active_when_disconnected;
 
     public GameObject[] pointer;
 
@@ -67,7 +69,7 @@ public class Node : MonoBehaviour
     {
         if (node_type == 1)
         {
-            Debug.Log("Can't.");
+            // Debug.Log("Can't.");
         }
 
         if (node_type == 2)
@@ -99,7 +101,8 @@ public class Node : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (node_type == 3) {charge_time = 1f;}
+        if (be_active_when_disconnected && connected_nodes[0] == null) {charge_time = 1f;}
+        if (node_type == 3 && always_generates) {charge_time = 1f;}
 
         if (charge_time > 0f)
         {
@@ -110,7 +113,7 @@ public class Node : MonoBehaviour
             {
                 if (connected_nodes[i] != null)
                 {
-                    if (node_type == 3) {charge_time = 1f;}
+                    if (node_type == 3 && always_generates) {charge_time = 1f;}
                     // Debug.Log("Something here");
                     connected_nodes[i].TransferSignal(this, charge_time);
                 }
@@ -121,16 +124,19 @@ public class Node : MonoBehaviour
             my_sprite.color = col_d;
         }
 
-        for (int i = 0; i < pointer.Length; i++)
+        if (pointer.Length > 0)
         {
-            if (connected_nodes[i] != null)
+            for (int i = 0; i < pointer.Length; i++)
             {
-                pointer[i].SetActive(true);
-                pointer[i].transform.LookAt(connected_nodes[i].gameObject.transform.position);
+                if (connected_nodes[i] != null)
+                {
+                    pointer[i].SetActive(true);
+                    pointer[i].transform.LookAt(connected_nodes[i].gameObject.transform.position);
 
-            } else
-            {
-                pointer[i].SetActive(false);
+                } else
+                {
+                    pointer[i].SetActive(false);
+                }
             }
         }
     }

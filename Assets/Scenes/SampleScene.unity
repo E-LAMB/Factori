@@ -1342,7 +1342,7 @@ MonoBehaviour:
     m_Bits: 8128
   destructable:
     serializedVersion: 2
-    m_Bits: 6272
+    m_Bits: 6336
   previous_build: {x: 0, y: 0, z: 0}
   time_since_build: 0
   build_held: 0
@@ -1355,6 +1355,8 @@ MonoBehaviour:
   - {fileID: 2114545875652912412, guid: c6881022c0ecf8c47afa736630ae6c25, type: 3}
   - {fileID: 4935522940660474474, guid: 68c8ea49bd46e32409a429cb3b8201a2, type: 3}
   - {fileID: 5029557107711184606, guid: 3256b2f8b60d90c489c3ff54048b5b9d, type: 3}
+  - {fileID: 2783220337677002038, guid: 971fb562e57666c40813aa06bd3a9116, type: 3}
+  - {fileID: 2833946612852606488, guid: 9be3c9ac14aee13429748b6bad9afee4, type: 3}
   scroll_select: 0
   chosen_item: 0
   showup: {fileID: 451876596}
@@ -1510,35 +1512,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7838888317051321061, guid: 023ed4231f490434fb9fc87d438aea36, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1210805833}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 023ed4231f490434fb9fc87d438aea36, type: 3}
 --- !u!1 &1210805827 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7838888317051321061, guid: 023ed4231f490434fb9fc87d438aea36, type: 3}
   m_PrefabInstance: {fileID: 1210805826}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1210805833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1210805827}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4213b17ba4bddd4f8aebc6ee6b5e1f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  node_type: 0
-  connected_nodes: []
-  my_sprite: {fileID: 0}
-  col_a: {r: 0, g: 0, b: 0, a: 0}
-  col_d: {r: 0, g: 0, b: 0, a: 0}
-  charge_time: 0
-  pointer: []
 --- !u!1001 &1272840725
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2371,6 +2351,7 @@ MonoBehaviour:
   col_a: {r: 0.27314126, g: 1, b: 0, a: 1}
   col_d: {r: 0.21165133, g: 0.4245283, b: 0.1909042, a: 1}
   charge_time: 0
+  always_generates: 1
   pointer:
   - {fileID: 2021614164140511536}
 --- !u!4 &326297662994062783 stripped

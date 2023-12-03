@@ -11,6 +11,8 @@ public class Fan : MonoBehaviour
 
     public Transform self;
 
+    public Node my_node;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,13 +22,31 @@ public class Fan : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit2D ray_data = Physics2D.Raycast(self.position, push_direction, 5f, interactables);
-
-        if (ray_data.collider != null)
+        if (my_node != null)
         {
-            if (ray_data.collider.gameObject.GetComponent<Rigidbody2D>())
+            if (my_node.charge_time > 0f)
             {
-                ray_data.collider.gameObject.GetComponent<Rigidbody2D>().velocity += (push_direction * intensity);
+                RaycastHit2D ray_data = Physics2D.Raycast(self.position, push_direction, 5f, interactables);
+
+                if (ray_data.collider != null)
+                {
+                    if (ray_data.collider.gameObject.GetComponent<Rigidbody2D>())
+                    {
+                        ray_data.collider.gameObject.GetComponent<Rigidbody2D>().velocity += (push_direction * intensity);
+                    }
+                }
+            }
+
+        } else
+        {
+            RaycastHit2D ray_data = Physics2D.Raycast(self.position, push_direction, 5f, interactables);
+
+            if (ray_data.collider != null)
+            {
+                if (ray_data.collider.gameObject.GetComponent<Rigidbody2D>())
+                {
+                    ray_data.collider.gameObject.GetComponent<Rigidbody2D>().velocity += (push_direction * intensity);
+                }
             }
         }
 
