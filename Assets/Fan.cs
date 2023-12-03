@@ -7,6 +7,7 @@ public class Fan : MonoBehaviour
 
     public Vector2 push_direction;
     public LayerMask interactables;
+    public float intensity = 1f;
 
     public Transform self;
 
@@ -25,7 +26,7 @@ public class Fan : MonoBehaviour
         {
             if (ray_data.collider.gameObject.GetComponent<Rigidbody2D>())
             {
-                ray_data.collider.gameObject.GetComponent<Rigidbody2D>().velocity += push_direction;
+                ray_data.collider.gameObject.GetComponent<Rigidbody2D>().velocity += (push_direction * intensity);
             }
         }
 

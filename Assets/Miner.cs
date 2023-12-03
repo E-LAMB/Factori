@@ -14,6 +14,8 @@ public class Miner : MonoBehaviour
 
     public int current;
 
+    public Node has_node;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +25,8 @@ public class Miner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
+        if (has_node != null) {if (has_node.charge_time > 0f) {timer += Time.deltaTime;}} else {timer += Time.deltaTime;}
+
         if (timer_activation < timer) 
         {
             timer -= timer_activation;

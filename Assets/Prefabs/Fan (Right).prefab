@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4947344385470423437}
   - component: {fileID: 3098598560729068312}
   - component: {fileID: 636743260088064803}
-  m_Layer: 7
+  m_Layer: 11
   m_Name: Fan (Right)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -147,7 +147,8 @@ MonoBehaviour:
   push_direction: {x: 0.1, y: 0}
   interactables:
     serializedVersion: 2
-    m_Bits: 576
+    m_Bits: 1728
+  intensity: 1.5
   self: {fileID: 9202732531358364720}
 --- !u!1 &7391722744221134300
 GameObject:
