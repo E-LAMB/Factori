@@ -32,7 +32,7 @@ public class InfectedPlayer : MonoBehaviour
 
         if (turns_until_upgrade <= 0)
         {
-            turns_until_upgrade = 10;
+            turns_until_upgrade = Random.Range(9, 16);
 
             max_actions += 1;
         }

@@ -7,8 +7,8 @@ public class Player : MonoBehaviour
 {
 
     public int current_turn = 0;
-    public float max_ap = 3;
-    public float current_ap = 3;
+    public float max_ap = 0;
+    public float current_ap = 0;
 
     public bool player_turn;
 
@@ -18,14 +18,22 @@ public class Player : MonoBehaviour
 
     public Vector3 targeted_square;
 
+    public Transform self;
+    public float movement_speed;
+
     public bool show_descriptor;
 
     public bool in_dialouge;
 
-    public float material_R = 0f; // A resource mostly for moving parts, Such as bots
-    public float material_G = 0f; // A resource mostly for the maintenance of things
-    public float material_B = 0f; // A resource for building things
-    public float material_Y = 0f; // A multipurpose resource
+    public int material_R = 0; // A resource mostly for moving parts, Such as bots
+    public int material_G = 0; // A resource mostly for the maintenance of things
+    public int material_B = 0; // A resource for building things
+    public int material_Y = 0; // A multipurpose resource
+
+    public int storage_R = 10;
+    public int storage_G = 10;
+    public int storage_B = 10;
+    public int storage_Y = 10;
 
     public string role;
     // Roles and their benefits
@@ -55,6 +63,8 @@ public class Player : MonoBehaviour
 
     public InfectedPlayer infection_player;
 
+    public int storage_capacity_bonus = 20;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -82,7 +92,9 @@ public class Player : MonoBehaviour
 
     public void BeginPlayerTurn()
     {
-        max_ap += 1f;
+        float turn_as_float = current_turn;
+        max_ap = Mathf.Round(turn_as_float / 10f) + 50f;
+
         current_ap = max_ap;
         current_turn += 1;
         title_turn.text = "Turn : " + current_turn.ToString();
@@ -93,6 +105,35 @@ public class Player : MonoBehaviour
     {
         if (player_turn)
         {
+
+            storage_R = 10;
+            storage_G = 10;
+            storage_B = 10;
+            storage_Y = 10;
+
+            Unit[] all_units = Object.FindObjectsOfType<Unit>();
+            if (all_units.Length > 0) {for (int x = 0; x < all_units.Length; x++) {all_units[x].PlayerTurnEnded();}}
+
+            Building[] all_buildings = Object.FindObjectsOfType<Building>();
+            if (all_buildings.Length > 0) 
+            {
+                for (int x = 0; x < all_buildings.Length; x++) 
+                {
+
+                    if (all_buildings[x].building_name == "Storage R") {storage_R += storage_capacity_bonus;}
+                    if (all_buildings[x].building_name == "Storage G") {storage_G += storage_capacity_bonus;}
+                    if (all_buildings[x].building_name == "Storage B") {storage_B += storage_capacity_bonus;}
+                    if (all_buildings[x].building_name == "Storage Y") {storage_Y += storage_capacity_bonus;}
+
+                    all_buildings[x].PlayerTurnEnded();
+                }
+            }
+
+            if (storage_R < material_R) {material_R = storage_R;}
+            if (storage_G < material_G) {material_G = storage_G;}
+            if (storage_B < material_B) {material_B = storage_B;}
+            if (storage_Y < material_Y) {material_Y = storage_Y;}
+
             Debug.Log("Turn Ended");
             selected_unit = null;
             show_descriptor = false;
@@ -108,6 +149,9 @@ public class Player : MonoBehaviour
         G_text.text = material_G.ToString();
         B_text.text = material_B.ToString();
         Y_text.text = material_Y.ToString();
+
+        self.position = self.position + new Vector3(Input.GetAxis("Horizontal") * Time.deltaTime * movement_speed,
+         Input.GetAxis("Vertical") * Time.deltaTime * movement_speed, 0f);
 
         select_panel.SetActive(show_descriptor && !in_dialouge);
         material_view.SetActive(!in_dialouge);

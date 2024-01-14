@@ -15,12 +15,19 @@ public class Unit : MonoBehaviour
     public float attack_damage;
     public float health;
 
+    public LayerMask blockable;
+
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Player>();
         if (player.role == "Warrior") {attack_damage += 1;}
         ideal_position = self.position;
+    }
+
+    public void PlayerTurnEnded()
+    {
+        
     }
 
     void OnMouseDown()
@@ -46,10 +53,33 @@ public class Unit : MonoBehaviour
         {
             if (Vector3.Distance(self.transform.position, target) < 1.5f && Vector3.Distance(self.transform.position, target) > 0.4f)
             {
-                if (player.current_ap >= action_cost)
+                if (Physics2D.OverlapCircle(target, 0.4f, blockable))
                 {
-                    player.current_ap -= action_cost;
-                    ideal_position = target;
+                    Collider2D found = Physics2D.OverlapCircle(target, 0.4f, blockable);
+
+                    if (found.gameObject.GetComponent<InfectedBot>())
+                    {
+                        if (player.current_ap >= action_cost)
+                        {
+                            found.gameObject.GetComponent<InfectedBot>().health -= attack_damage;
+                            player.current_ap -= action_cost;
+
+                            if (found.gameObject.GetComponent<InfectedBot>().health < 1)
+                            {
+                                Destroy(found.gameObject);
+                            }
+
+                            if (!Physics2D.OverlapCircle(target, 0.4f, blockable)) {ideal_position = target;}
+                        }
+                    }
+
+                } else
+                {
+                    if (player.current_ap >= action_cost)
+                    {
+                        player.current_ap -= action_cost;
+                        ideal_position = target;
+                    }
                 }
             }
         }
