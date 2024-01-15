@@ -64,7 +64,7 @@ public class Unit : MonoBehaviour
                             found.gameObject.GetComponent<InfectedBot>().health -= attack_damage;
                             player.current_ap -= action_cost;
 
-                            if (found.gameObject.GetComponent<InfectedBot>().health < 1)
+                            if (found.gameObject.GetComponent<InfectedBot>().health <= 0)
                             {
                                 Destroy(found.gameObject);
                             }

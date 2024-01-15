@@ -9,9 +9,11 @@ public class Building : MonoBehaviour
 
     public string building_name;
 
-    public int internal_charge;
+    public float internal_charge;
 
     public Player player;
+
+    public Transform self;
 
 /*
 
@@ -64,8 +66,8 @@ A solid structure with a lot of health.
 Research Station -
 Builds 1 charge internally at the end of each turn. 
 Once reaching 15 charges, Adds 1 point towards research and reset internal charge to 0. 
-There is a 50% chance of creating a second charge at the end of each turn as well as inflicting 1 damage...
-...on other nearby Research Stations. 
+There is a 50% chance of creating a second charge at the end of each turn 
+as well as another 10% chance of damaging itself at the end of each turn
 If you are the Researcher, Then the charges generated during the turn are multiplied by %150 (1.5x multiplier)
 
 Inhibitor -
@@ -92,7 +94,35 @@ When destroyed, You lose half of your total resources of that type.
     {
         if (building_name == "Research Station")
         {
-            internal_charge += 1;
+            float added_charges = 1;
+
+            if (Random.Range(0, 2) == 1) { added_charges += 1f;}
+            
+            if (Random.Range(0, 11) == 1) 
+            {
+
+                bool inhibitors_nearby = false;
+
+                Building[] all_buildings = Object.FindObjectsOfType<Building>();
+                if (all_buildings.Length > 0) 
+                {
+                    for (int x = 0; x < all_buildings.Length; x++) 
+                    {
+                        if (all_buildings[x].building_name == "Inhibitor" && Vector3.Distance(self.position, all_buildings[x].self.position) < 5f)
+                        {
+                            inhibitors_nearby = true;
+                        }
+                    }
+                }
+
+                if (!inhibitors_nearby)
+                {
+                    health -= 1f;
+                    if (health <= 0) {Destroy(gameObject);}
+                }
+            } 
+
+            internal_charge += added_charges;
         }
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class InfectedBot : MonoBehaviour
 {
 
-    public Unit nearest_unit;
+    public GameObject nearest_object;
 
     public Transform self;
     public Vector3 ideal_position;
@@ -40,26 +40,27 @@ public class InfectedBot : MonoBehaviour
         {
 
             Unit[] all_bots = Object.FindObjectsOfType<Unit>();
+            Building[] other_buildings = Object.FindObjectsOfType<Building>();
 
             if (all_bots.Length > 0)
             {
 
-                nearest_unit = all_bots[Random.Range(0, all_bots.Length)];
+                nearest_unit = all_bots[Random.Range(0, all_bots.Length)].gameObject;
 
                 for (int x = 0; x < all_bots.Length; x++)
                 {
-                    if (Vector3.Distance(self.position, nearest_unit.self.position) > Vector3.Distance(self.position, all_bots[x].self.position))
+                    if (Vector3.Distance(self.position, nearest_unit.transform.position) > Vector3.Distance(self.position, all_bots[x].self.position))
                     {
-                        nearest_unit = all_bots[x];
+                        nearest_unit = all_bots[x].gameObject;
                     }
                 }
 
                 Vector3 picked_position = self.position;
 
-                if (nearest_unit.self.position.x > picked_position.x) {picked_position.x += 1;}
-                if (nearest_unit.self.position.x < picked_position.x) {picked_position.x -= 1;}
-                if (nearest_unit.self.position.y > picked_position.y) {picked_position.y += 1;}
-                if (nearest_unit.self.position.y < picked_position.y) {picked_position.y -= 1;}
+                if (nearest_unit.transform.position.x > picked_position.x) {picked_position.x += 1;}
+                if (nearest_unit.transform.position.x < picked_position.x) {picked_position.x -= 1;}
+                if (nearest_unit.transform.position.y > picked_position.y) {picked_position.y += 1;}
+                if (nearest_unit.transform.position.y < picked_position.y) {picked_position.y -= 1;}
 
                 if (Physics2D.OverlapCircle(picked_position, 0.4f, obstructing_layer))
                 {
@@ -73,7 +74,7 @@ public class InfectedBot : MonoBehaviour
                         {
                             found.gameObject.GetComponent<Building>().health -= attack_damage;
 
-                            if (found.gameObject.GetComponent<Building>().health < 1)
+                            if (found.gameObject.GetComponent<Building>().health <= 0)
                             {
                                 Destroy(found.gameObject);
                             }
@@ -82,7 +83,7 @@ public class InfectedBot : MonoBehaviour
                         {
                             found.gameObject.GetComponent<Unit>().health -= attack_damage;
 
-                            if (found.gameObject.GetComponent<Unit>().health < 1)
+                            if (found.gameObject.GetComponent<Unit>().health <= 0)
                             {
                                 Destroy(found.gameObject);
                             }
@@ -106,7 +107,8 @@ public class InfectedBot : MonoBehaviour
                 {
                     ideal_position = picked_position;
                 }
-            }
+
+            } 
         }
     }
 
