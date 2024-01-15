@@ -93,7 +93,14 @@ public class Player : MonoBehaviour
     public void BeginPlayerTurn()
     {
         float turn_as_float = current_turn;
-        max_ap = Mathf.Round(turn_as_float / 10f) + 50f;
+        max_ap = 25f;
+
+        Building[] all_builds = Object.FindObjectsOfType<Building>();
+
+        for (int i = 0; i < all_builds.Length; i++)
+        {
+            if (all_builds[i].building_name == "Battery") { max_ap += 5f; }
+        }
 
         current_ap = max_ap;
         current_turn += 1;

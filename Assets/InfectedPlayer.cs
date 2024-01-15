@@ -20,6 +20,8 @@ public class InfectedPlayer : MonoBehaviour
 
     public InfectedBot[] all_infected;
 
+    public int mourning_time;
+
     public void Start()
     {
         
@@ -38,6 +40,12 @@ public class InfectedPlayer : MonoBehaviour
         }
 
         actions = max_actions;
+
+        if (mourning_time > 0)
+        {
+            turns_until_upgrade -= 1;
+            if (actions > 3) { actions = 3; }
+        }
 
         infection_turn = true;
 
@@ -59,8 +67,16 @@ public class InfectedPlayer : MonoBehaviour
     public void InfectionTurnEnd()
     {
         infection_turn = false;
+        mourning_time -= 1;
+        wakeup_cost -= 1;
 
         player.BeginPlayerTurn();
+    }
+
+    public void Mourn()
+    {
+        mourning_time = Random.Range(3, 6);
+        wakeup_cost -= 1;
     }
 
     public void Update()
@@ -104,7 +120,7 @@ public class InfectedPlayer : MonoBehaviour
                 }
             }
 
-            if (turn_time > 3f || actions == 0 || (!active_bots && wakeup_cost >= 0))
+            if (turn_time > 3f || actions == 0 || (!active_bots && wakeup_cost >= 0) || all_infected.Length == 0)
             {
                 InfectionTurnEnd();
             }

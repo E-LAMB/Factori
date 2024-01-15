@@ -11,7 +11,7 @@ public class InfectedBot : MonoBehaviour
     public Vector3 ideal_position;
 
     public float attack_damage;
-    public float health;
+    public float health = 100;
 
     public LayerMask obstructing_layer;
 
@@ -21,17 +21,27 @@ public class InfectedBot : MonoBehaviour
     public Sprite bot_disabled;
     public Sprite bot_enabled;
 
+    public InfectedPlayer infected_player;
+
     public bool is_moving;
 
     // Start is called before the first frame update
     void Start()
     {
         ideal_position = self.position;
+        infected_player = Object.FindObjectOfType<InfectedPlayer>();
     }
 
     public void WakeUp()
     {
         is_active = true;
+        attack_damage = Random.Range(1, 4);
+        health = 20 - (attack_damage * 2);  
+    }
+
+    public void OnDestroy()
+    {
+        infected_player.Mourn();
     }
 
     public void TakeTurn()
@@ -45,22 +55,22 @@ public class InfectedBot : MonoBehaviour
             if (all_bots.Length > 0)
             {
 
-                nearest_unit = all_bots[Random.Range(0, all_bots.Length)].gameObject;
+                nearest_object = all_bots[Random.Range(0, all_bots.Length)].gameObject;
 
                 for (int x = 0; x < all_bots.Length; x++)
                 {
-                    if (Vector3.Distance(self.position, nearest_unit.transform.position) > Vector3.Distance(self.position, all_bots[x].self.position))
+                    if (Vector3.Distance(self.position, nearest_object.transform.position) > Vector3.Distance(self.position, all_bots[x].self.position))
                     {
-                        nearest_unit = all_bots[x].gameObject;
+                        nearest_object = all_bots[x].gameObject;
                     }
                 }
 
                 Vector3 picked_position = self.position;
 
-                if (nearest_unit.transform.position.x > picked_position.x) {picked_position.x += 1;}
-                if (nearest_unit.transform.position.x < picked_position.x) {picked_position.x -= 1;}
-                if (nearest_unit.transform.position.y > picked_position.y) {picked_position.y += 1;}
-                if (nearest_unit.transform.position.y < picked_position.y) {picked_position.y -= 1;}
+                if (nearest_object.transform.position.x > picked_position.x) {picked_position.x += 1;}
+                if (nearest_object.transform.position.x < picked_position.x) {picked_position.x -= 1;}
+                if (nearest_object.transform.position.y > picked_position.y) {picked_position.y += 1;}
+                if (nearest_object.transform.position.y < picked_position.y) {picked_position.y -= 1;}
 
                 if (Physics2D.OverlapCircle(picked_position, 0.4f, obstructing_layer))
                 {
